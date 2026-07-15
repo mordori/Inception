@@ -1,7 +1,9 @@
 COMPOSE_FILE = srcs/docker-compose.yml
 DIR_DATA = $(HOME)/data
 
-# -f = file; up = create and start networks, volumes, and containers; -d = detached, terminal control;
+# -f = file
+# up = create and start networks, volumes, and containers
+# -d = detached, terminal control
 # --build = build images from scratch instead of using caches
 all: prepare
 	docker compose -f $(COMPOSE_FILE) up -d --build
@@ -10,11 +12,14 @@ prepare:
 	mkdir -p $(DIR_DATA)/mariadb
 	mkdir -p $(DIR_DATA)/wordpress
 
-# down = stops and removes running containers and temporary networks they use. Does not delete volumes
+# down = stops and removes running containers and temporary networks they use
+# Does not delete volumes
 down:
 	docker compose -f $(COMPOSE_FILE) down
 
-# -f = force; -a = all; prune = delete unused containers, networks, and images
+# -f = force
+# -a = all
+# prune = delete unused containers, networks, and images
 clean: down
 	docker system prune -af
 

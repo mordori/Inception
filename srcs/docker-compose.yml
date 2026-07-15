@@ -4,7 +4,7 @@ services:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     container_name: mariadb
-    image: mariadb_image
+    image: mariadb
     restart: unless-stopped
     env_file:
       - .env
@@ -21,7 +21,7 @@ services:
       context: ./requirements/wordpress
       dockerfile: dockerfile
     container_name: wordpress
-    image: wordpress_image
+    image: wordpress
     restart: unless-stopped
     env_file:
       - .env
@@ -41,7 +41,7 @@ services:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     container_name: nginx
-    image: nginx_image
+    image: nginx
     restart: unless-stopped
     ports:
       - "443:443"
