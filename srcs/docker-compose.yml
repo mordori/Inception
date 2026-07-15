@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mariadb:
     build:
@@ -7,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: mariadb
     image: mariadb_image
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     networks:
@@ -24,7 +22,7 @@ services:
       dockerfile: dockerfile
     container_name: wordpress
     image: wordpress_image
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     networks:
@@ -44,7 +42,7 @@ services:
       dockerfile: Dockerfile
     container_name: nginx
     image: nginx_image
-    restart: always
+    restart: unless-stopped
     ports:
       - "443:443"
     networks:
@@ -75,10 +73,10 @@ volumes:
 
 secrets:
   db_root_password:
-    file: ./secrets/db_root_password.txt
+    file: ../secrets/db_root_password.txt
   db_user_password:
-    file: ./secrets/db_user_password.txt
+    file: ../secrets/db_user_password.txt
   wp_admin_password:
-    file: ./secrets/wp_admin_password.txt
+    file: ../secrets/wp_admin_password.txt
   wp_user_password:
-    file: ./secrets/wp_user_password.txt
+    file: ../secrets/wp_user_password.txt
