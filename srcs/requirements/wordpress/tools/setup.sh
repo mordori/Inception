@@ -3,6 +3,11 @@
 echo "[WordPress] Waiting for MariaDB to be ready..."
 sleep 10
 
+# Gets the passwords directly from a temporary runtime file system held in RAM, which cannot be inspected
+WP_ADMIN_PASSWORD=$(cat "/run/secrets/wp_admin_password")
+WP_USER_PASSWORD=$(cat "/run/secrets/wp_user_password")
+DB_USER_PASSWORD=$(cat "/run/secrets/db_user_password")
+
 # Checks if WordPress is already installed in the volume
 if [ ! -f "/var/www/html/wp-config.php" ]; then
 	echo "[WordPress] Installing WordPress..."
@@ -11,11 +16,11 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
 	wp core download --allow-root
 
 	# Creates wp-config.php file to connect to MariaDB
-	# using 'mariadb' as host (Docker's internal DNS routes service names to IPs)
+	# Uses 'mariadb' as host (Docker's internal DNS routes service names to IPs)
 	wp config create \
-		--dbname=${MYSQL_DATABASE} \
-		--dbuser=${MYSQL_USER} \
-		--dbpass=${MYSQL_PASSWORD} \
+		--dbname=${DB_DATABASE} \
+		--dbuser=${DB_USER} \
+		--dbpass=${DB_USER_PASSWORD} \
 		--dbhost=mariadb:3306 \
 		--allow-root
 
@@ -42,6 +47,6 @@ else
 	echo "[WordPress] WordPress is already installed. Skipping setup."
 fi
 
-# Hand over PID 1; -F=force to stay in foreground
+# Hands over PID 1; -F=force to stay in foreground
 echo "[WordPress] Starting PHP-FPM daemon."
 exec php-fpm84 -F
