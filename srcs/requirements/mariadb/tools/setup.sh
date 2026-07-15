@@ -24,10 +24,10 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 
 	# Generates temporary script with configuration queries
 	# 1. Refreshes internal security tables
-	# 2. Changes pw for root admin, allowed to connect only from inside of the local container
-	# 3. Creates empty DB for Wordpress
-	# 4. Creates weak user for Wordpress, allowed to connect from any IP address on the network
-	# 5. Grants Wordpress DB privileges to the user
+	# 2. Sets pw for root admin, allowed to connect only from inside of the local container
+	# 3. Creates empty DB for WordPress
+	# 4. Creates weak user for WordPress, allowed to connect from any IP address on the network
+	# 5. Grants WordPress DB privileges to the user
 	# 6. Refresh to apply the changes
 	TEMP_SQL="/tmp/init.sql"
 	cat << EOF > $TEMP_SQL
@@ -40,13 +40,14 @@ FLUSH PRIVILEGES;
 EOF
 
 	# Execute SQL in bootstrap mode (offline configuration mode)
-	echo "[MariDB] Ingesting initial configuration secure script..."
+	echo "[MariDB] Ingesting initial configuration script..."
 	mariadbd --user=mysql --bootstrap < $TEMP_SQL
 
+	# Remove the temp init script with plain passwords
 	rm -f $TEMP_SQL
 	echo "[MariaDB] Setup database successfully completed."
 fi
 
-# Re-claims PID 1
-echo "[MariaDB] Handing off process control to MariaDB server daemon."
+# Hand over PID 1
+echo "[MariaDB] Starting MariaDB daemon."
 exec mariadbd --user=mysql
