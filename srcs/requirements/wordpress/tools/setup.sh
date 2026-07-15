@@ -12,7 +12,8 @@ DB_USER_PASSWORD=$(cat "/run/secrets/db_user_password")
 if [ ! -f "/var/www/html/wp-config.php" ]; then
 	echo "[WordPress] Installing WordPress..."
 
-	# Downloads WordPress core files; --allow-root = Docker runs as root by default
+	# Downloads WordPress core files
+	# --allow-root = Docker runs as root by default
 	wp core download --allow-root
 
 	# Creates wp-config.php file to connect to MariaDB
@@ -47,6 +48,7 @@ else
 	echo "[WordPress] WordPress is already installed. Skipping setup."
 fi
 
-# Hands over PID 1; -F=force to stay in foreground
+# Hands over PID 1
+# -F = force to stay in foreground
 echo "[WordPress] Starting PHP-FPM daemon."
 exec php-fpm84 -F

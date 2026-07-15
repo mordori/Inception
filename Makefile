@@ -21,7 +21,7 @@ clean: down
 # Deletes data directory from the host machine and tells docker to forget them with a list command substitution
 # || true is needed in the case there are no volumes to delete. rm would exit with a failure and crash make
 fclean: clean
-	rm -rf $(DIR_DATA)
+	sudo rm -rf $(DIR_DATA)
 	docker volume rm $$(docker volume ls -q) 2>/dev/null || true
 
 re: fclean all

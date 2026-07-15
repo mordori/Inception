@@ -21,10 +21,10 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 RUN mkdir -p /var/www/html && \
 	chown -R nobody:nobody /var/www/html
 
-# Copies PHP_FPM config
+# Copies PHP_FPM configuration
 COPY conf/www.conf /etc/php84/php-fpm.d/www.conf
 
-# Copies setup script from host machine
+# Copies setup script
 COPY tools/setup.sh /usr/local/bin/setup.sh
 RUN chmod +x /usr/local/bin/setup.sh
 
