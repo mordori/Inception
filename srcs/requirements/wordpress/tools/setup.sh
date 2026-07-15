@@ -1,12 +1,24 @@
 #!/bin/sh
 
-echo "[WordPress] Waiting for MariaDB to be ready..."
-sleep 10
-
 # Gets the passwords directly from a temporary runtime file system held in RAM, which cannot be inspected
 WP_ADMIN_PASSWORD=$(cat "/run/secrets/wp_admin_password")
 WP_USER_PASSWORD=$(cat "/run/secrets/wp_user_password")
 DB_USER_PASSWORD=$(cat "/run/secrets/db_user_password")
+
+echo "[WordPress] Waiting for MariaDB to be ready..."
+MAX_TRIES=15
+COUNT=0
+
+# Tries to connect to MariaDB every 2 seconds, up to 15 times (30s timeout)
+while ! mariadb -h mariadb -u "${DB_USER}" -p"${DB_USER_PASSWORD}" -e "SELECT 1;" >/dev/null 2>&1; do
+	if [ $COUNT -ge $MAX_TRIES ]; then
+		echo "[WordPress] Error: MariaDB connection timed out. Exiting..."
+		exit 1
+	fi
+	sleep 2
+	COUNT=$((COUNT + 1))
+done
+echo "[WordPress] MariaDB is up and running!"
 
 # Checks if WordPress is already installed in the volume
 if [ ! -f "/var/www/html/wp-config.php" ]; then

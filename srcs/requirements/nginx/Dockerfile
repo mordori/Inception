@@ -5,18 +5,21 @@ RUN apk update && apk add --no-cache \
 	nginx \
 	openssl
 
-# Created dir for SSL certificate
-RUN mkdir -p /etc/nginx/ssl
+# Created dir for SSL certificate and set strict user permissions
+RUN mkdir -p /etc/ssl/certs /etc/ssl/private && \
+	chmod 755 /etc/ssl/certs && \
+	chmod 700 /etc/ssl/private
 
 # Generates self-signed SSL/TLS certificate (Transport Layer Security, modern replacement)
 # -x509 = instant self-signed cert
+# -sha256 = forces to use modern SHA-2 hash function
 # -nodes = No Data Encryption Standard, i.e. no password
-# -newkey rsa:2048 = generate secure 2048-bit RSA key for TLS handshake
+# -newkey rsa:4096 = generate secure 4096-bit RSA key for TLS handshake
 # -keyout, -out = file locations
 # -subj = pre-fills interactive fields
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	-keyout /etc/nginx/ssl/inception.key \
-	-out /etc/nginx/ssl/inception.crt \
+RUN openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:4096 \
+	-keyout /etc/nginx/ssl/private/inception.key \
+	-out /etc/nginx/ssl/certs/inception.crt \
 	-subj "/C=FI/ST=Uusimaa/L=Helsinki/O=42/OU=Student/CN=myli-pen.42.fr"
 
 # Creates dir for NGINX PID file (needed by NGINX for legacy reasons)
