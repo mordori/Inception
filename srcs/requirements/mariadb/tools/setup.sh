@@ -9,7 +9,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 	echo "[MariaDB] Empty data directory detected. Creating database..."
 
 	# Installs MariaDB system tables
-	mysql_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
+	mariadb_install_db --user=mysql --datadir=/var/lib/mysql > /dev/null
 
 	# Generates temporary script with configuration queries
 	# 1. Refreshes internal security tables

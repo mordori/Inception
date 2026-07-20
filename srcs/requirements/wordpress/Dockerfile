@@ -34,5 +34,8 @@ EXPOSE 9000
 # Sets working dir to web root
 WORKDIR /var/www/html
 
+# Force memory limit directly into the global PHP config
+RUN echo "memory_limit = 512M" >> /etc/php84/php.ini
+
 # Runs the setup script
 ENTRYPOINT ["sh", "/usr/local/bin/setup.sh"]
