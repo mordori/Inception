@@ -6,9 +6,9 @@ RUN apk update && apk add --no-cache \
 	openssl
 
 # Created dir for SSL certificate and set strict user permissions
-RUN mkdir -p /etc/ssl/certs /etc/ssl/private && \
-	chmod 755 /etc/ssl/certs && \
-	chmod 700 /etc/ssl/private
+RUN mkdir -p /etc/nginx/ssl/certs /etc/nginx/ssl/private && \
+	chmod 755 /etc/nginx/ssl/certs && \
+	chmod 700 /etc/nginx/ssl/private
 
 # Generates self-signed SSL/TLS certificate (Transport Layer Security, modern replacement)
 # -x509 = instant self-signed cert
