@@ -10,6 +10,7 @@ MAX_TRIES=15
 COUNT=0
 
 # Tries to connect to MariaDB every 2 seconds, up to 15 times (30s timeout)
+# -h = host, uses Dockers internal DNS to connect over to mariaDB service
 while ! mariadb -h mariadb -u "${DB_USER}" -p"${DB_USER_PASSWORD}" -e "SELECT 1;" >/dev/null 2>&1; do
 	if [ $COUNT -ge $MAX_TRIES ]; then
 		echo "[WordPress] Error: MariaDB connection timed out. Exiting..."

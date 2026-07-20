@@ -38,5 +38,6 @@ EOF
 fi
 
 # Hands over PID 1
+# Docker container stays alive as long as the main process PID 1 is running
 echo "[MariaDB] Starting MariaDB server daemon."
 exec mariadbd --user=mysql

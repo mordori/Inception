@@ -38,5 +38,5 @@ EXPOSE 443
 
 # Starts NGINX in the foreground with PID 1
 # -g = global directives
-# Docker container stays alive as long as the main process PID 1 is running, so NGINX needs to run on foreground
+# NGINX runs on background by default
 CMD ["nginx", "-g", "daemon off;"]
