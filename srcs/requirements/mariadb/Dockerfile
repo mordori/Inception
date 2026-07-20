@@ -5,8 +5,8 @@ FROM alpine:3.23
 # apk = alpine package keeper
 # --no-cache = removes installation files
 RUN apk update && apk add --no-cache \
-	mmariadb \
-	mmariadb-client
+	mariadb \
+	mariadb-client
 
 # Creates runtime dir required by MariaDB socket file
 # mysql = client
